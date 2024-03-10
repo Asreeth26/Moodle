@@ -1,6 +1,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
+const multer = require('multer');
 const session = require('express-session');
 
 const app = express();
@@ -13,6 +14,7 @@ const url = "mongodb+srv://asreethp:mongodb@cluster0.9ozwbam.mongodb.net/Test?re
 const dbName = "Test";
 const collectionName0 = "test_collec";
 const collectionName1 = "Teachers_Details";
+const collection_material = "Materials";
 
 
 
@@ -80,6 +82,66 @@ app.post('/teacher', async (req, res) => {
     }
 });
 
+
+
+// ---------------Teachaer api -----------------
+
+async function connectToMongoDB_material() {
+    const client = new MongoClient(url);
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB");
+        return client.db(dbName).collection(collection_material);
+    } catch (error) {
+        console.error("MongoDB connection error:", error);
+        throw error;
+    }
+}
+const upload = multer();
+
+app.post('/material', upload.single('file'),async(req,res)=>{
+    try {
+        // Connect to MongoDB
+        const collection = await connectToMongoDB_material();
+        const { fileName } = req.body;
+        const fileBuffer = req.file.buffer; // Access the uploaded file from the request
+
+        console.log(fileBuffer)
+
+        
+        const result = await collection.insertOne({
+            fileName,
+            file: fileBuffer
+          });
+      
+          console.log('File uploaded successfully:', result.insertedId);
+          res.status(200).send('File uploaded successfully');
+
+
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).send('Failed to upload file');
+    }
+})
+
+app.get('/material', async (req, res) => {
+    try {
+        // Connect to MongoDB
+        const collection = await connectToMongoDB_material();
+
+        // Retrieve all documents from the collection
+        const files = await collection.find().toArray();
+
+        // Send the files as the response
+        res.status(200).json(files);
+    } catch (error) {
+        console.error('Error retrieving files:', error);
+        res.status(500).send('Failed to retrieve files');
+    }
+});
+
+
+// -----------------------------
 
 
 const PORT = process.env.PORT || 8000;

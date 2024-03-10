@@ -10,6 +10,7 @@ function Tdashboard(){// Extracting props passed from Login component
             <h1>Welcome, Teacher!</h1>
             <p>Your ID is: {id1}</p>
         </div>
+        
     );
 }
 
