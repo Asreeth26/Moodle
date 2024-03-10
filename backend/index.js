@@ -11,12 +11,13 @@ app.use(session({resave: false,
 
 const url = "mongodb+srv://asreethp:mongodb@cluster0.9ozwbam.mongodb.net/Test?retryWrites=true&w=majority";
 const dbName = "Test";
-const collectionName = "test_collec";
+const collectionName0 = "test_collec";
+const collectionName1 = "Teachers_Details";
 
 
 
 
-async function connectToMongoDB() {
+async function connectToMongoDB(collectionName) {
     const client = new MongoClient(url);
     try {
         await client.connect();
@@ -36,7 +37,7 @@ app.post('/', async (req, res) => {
 
     try {
         // Connect to MongoDB
-        const collection = await connectToMongoDB();
+        const collection = await connectToMongoDB(collectionName0);
 
         const user = await collection.findOne({ id: idInt, password:password });
 
@@ -53,6 +54,33 @@ app.post('/', async (req, res) => {
         res.status(500).json({ message: "0" });
     }
 });
+
+app.post('/teacher', async (req, res) => {
+    const { id, password } = req.body;
+    const idInt = parseInt(id); // Parse id as integer since id is stored in int32 in collections
+    console.log(idInt,password);
+
+    try {
+        // Connect to MongoDB
+        const collection = await connectToMongoDB(collectionName1);
+
+        const user = await collection.findOne({ id: idInt, password:password });
+
+
+        if (!user) {
+         
+            return res.json({ message: "User not found or incorrect password" });
+        }
+        req.session.roll = idInt; 
+        // User found, authentication successful
+        res.status(200).json({ message: "1" ,rollno:idInt});
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ message: "0" });
+    }
+});
+
+
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

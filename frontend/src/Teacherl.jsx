@@ -2,8 +2,9 @@ import {  useRef, useState } from "react"
 import './Login.css'
 import bg1 from './bg2.png'
 import { useNavigate } from "react-router-dom";
+import './Login.css'
 
-function Login(){
+function Teacherl(){
         
     const id = useRef();
     const pass = useRef()
@@ -14,7 +15,7 @@ function Login(){
         const id1 = id.current.value;
         const pass1 = pass.current.value;
         console.log(id1, pass1)
-        const res = await fetch('http://localhost:8000/', {
+        const res = await fetch('http://localhost:8000/teacher', {
           method: 'POST',
           body: JSON.stringify({ id: id1, password: pass1 }),
           headers: {
@@ -22,9 +23,9 @@ function Login(){
           }
         })
         const d = await res.json();
-        console.log(d.message)
+        console.log(d.rollno,d.message)
         if (d.message === "1") {
-          navigate('/student', { state: { id: id1 } });
+          navigate('/dashboard', { state: { id: id1 } });
         }
         else {
           console.log('no')
@@ -53,4 +54,4 @@ function Login(){
     )
 }
 
-export default Login
+export default Teacherl;
