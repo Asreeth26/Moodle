@@ -39,7 +39,7 @@ function Teacherl(){
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form  onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
         <h3>Login Here</h3>
 
         <label for="username">Username</label>
