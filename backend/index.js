@@ -15,6 +15,7 @@ const dbName = "Test";
 const collectionName0 = "test_collec";
 const collectionName1 = "Teachers_Details";
 const collection_material = "Materials";
+const collection_assign = "Assignment";
 
 
 
@@ -142,6 +143,68 @@ app.get('/material', async (req, res) => {
 
 
 // -----------------------------
+
+
+
+
+// ------------------------asssignment--------------------------------------------
+
+
+app.post('/assignment', upload.single('file'),async(req,res)=>{
+    try {
+        // Connect to MongoDB
+        const collection = await connectToMongoDB(collection_assign);
+        const { id,fileName } = req.body;
+        const fileBuffer = req.file.buffer; // Access the uploaded file from the request
+
+        console.log(fileBuffer)
+
+        
+        const result = await collection.insertOne({
+            id,
+            fileName,
+            file: fileBuffer
+          });
+      
+          console.log('File uploaded successfully:', result.insertedId);
+          res.status(200).send('File uploaded successfully');
+
+
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).send('Failed to upload file');
+    }
+})
+
+
+app.get('/assignment', async (req, res) => {
+    try {
+        // Connect to MongoDB
+        const collection = await connectToMongoDB(collection_assign);
+
+        // Retrieve all documents from the collection
+        const files = await collection.find().toArray();
+
+        // Send the files as the response
+        res.status(200).json(files);
+    } catch (error) {
+        console.error('Error retrieving files:', error);
+        res.status(500).send('Failed to retrieve files');
+    }
+});
+
+
+
+
+
+
+//-------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 const PORT = process.env.PORT || 8000;

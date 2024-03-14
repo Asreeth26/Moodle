@@ -3,6 +3,18 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useRef,useState } from "react";
 
 function Tdashboard(){// Extracting props passed from Login component
+    const [files, setFiles] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/assignment')
+            .then(response => response.json())
+            .then(data => {
+                setFiles(data);
+            })
+            .catch(error => {
+                console.error('Error fetching files:', error);
+            });
+    }, []);
     const location = useLocation();
     const id1 = location.state.id; // Accessing the id1 prop from state
     const filename = useRef();
@@ -14,6 +26,7 @@ function Tdashboard(){// Extracting props passed from Login component
         const file1 = file.current.files[0];
         console.log(filename1, file1)
         const formData = new FormData();
+        formData.append('id',id1);
         formData.append('fileName', filename1);
         formData.append('file', file1);
 
@@ -45,6 +58,21 @@ function Tdashboard(){// Extracting props passed from Login component
                 <input type="file" name="file" id="" ref={file} accept=".pdf"/> <br /> <br />
                 <input type="submit" value="Submit" />
         </form>
+
+        <div>
+            <h2>Assignments List</h2>
+            <ul>
+                {files.map((file, index) => (
+                    <li key={index}>
+                        {Object.keys(file).map(key => (
+                            <div key={key}>
+                                <strong>{key}:</strong> {file[key]}
+                            </div>
+                        ))}
+                    </li>
+                ))}
+            </ul>
+        </div>
         
         </>
         

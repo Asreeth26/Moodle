@@ -7,6 +7,8 @@ function Student() {
     const location = useLocation();
     const id1 = location.state.id; // Accessing the id1 prop from state
     const [files, setFiles] = useState([]);
+    const [assignment,setAssignment] = useState([]);
+    const file = useRef();
 
     useEffect(() => {
         fetch('http://localhost:8000/material')
@@ -17,7 +19,21 @@ function Student() {
             .catch(error => {
                 console.error('Error fetching files:', error);
             });
+
+        fetch('http://localhost:8000/assignment')
+        .then(response => response.json())
+            .then(data => {
+                setAssignment(data);
+            })
+            .catch(error => {
+                console.error('Error fetching files:', error);
+            });
     }, []);
+
+    function handleSubmit(event){
+        event.preventDefault();
+
+    }
 
     return (
         <>
@@ -35,6 +51,31 @@ function Student() {
                     </li>
                 ))}
             </ul>
+        </div>
+
+        <div>
+        <h2>Assignment List</h2>
+            <ul>
+                {assignment.map(file => (
+                    <li key={file._id}>
+                        <p>{file._id}</p>
+                        <strong>Filename:</strong> {file.fileName}
+                        <br />
+                        <strong>File Data:</strong>
+                        <a href={`data:application/pdf;base64,${file.file}`} download={file.fileName}>
+                            Download
+                        </a>
+                        <form onSubmit={handleSubmit}>
+                           <h1>Upload file</h1>
+                            <input type="file" name="file" id="" ref={file} accept=".pdf"/> <br /> <br />
+                            <input type="submit" value="Submit" />
+                        </form>
+                    </li>
+
+
+                ))}
+            </ul>
+
         </div>
         </>
     );
