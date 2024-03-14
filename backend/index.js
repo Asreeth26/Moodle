@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 const cors = require('cors');
 const multer = require('multer');
 const session = require('express-session');
+const { BSON } = require('bson');
 
 const app = express();
 app.use(cors());
@@ -194,6 +195,25 @@ app.get('/assignment', async (req, res) => {
 });
 
 
+
+app.post('/assign_upload',upload.single('file'),async(req,res)=>{
+    const collection = await connectToMongoDB(collection_assign);
+    const { id,sid } = req.body;
+    const fileBuffer = req.file.buffer; 
+    const objectId = new BSON.ObjectId(id);
+    const result = await collection.updateMany(
+        { _id: objectId },
+        { $set: { sid, fileBuffer } },
+        { upsert: true } // Upsert ensures the document is inserted if it doesn't exist
+    );
+
+    // Check if any document was updated or inserted
+    if (result.modifiedCount > 0 || result.upsertedCount > 0) {
+        res.status(200).send("Entry added/updated successfully.");
+    } else {
+        res.status(500).send("Failed to add/update entry or no matching document found.");
+    }
+})
 
 
 
