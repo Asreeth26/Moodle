@@ -51,8 +51,9 @@ function Attendance(){
             console.error('Error:', error);
           }
 
-
+          window.location.reload();
       };
+     
   
 
     return(
