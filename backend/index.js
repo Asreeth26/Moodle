@@ -17,6 +17,7 @@ const collectionName0 = "test_collec";
 const collectionName1 = "Teachers_Details";
 const collection_material = "Materials";
 const collection_assign = "Assignment";
+const collection_attend = "Attendance";
 
 
 
@@ -227,6 +228,52 @@ app.post('/assign_upload',upload.single('file'),async(req,res)=>{
 
 
 
+// ---------------------------Attendance------------------------------------------------------------
+
+app.get('/attendance',async (req,res)=>{
+    try {
+        // Connect to MongoDB
+        const collection = await connectToMongoDB(collection_attend);
+        const files = await collection.find().toArray();
+
+        // Send the files as the response
+        res.status(200).json(files);
+    } catch (error) {
+        console.error('Error retrieving files:', error);
+        res.status(500).send('Failed to retrieve files');
+    }
+
+})
+
+
+app.put('/attendance',async (req,res)=>{
+    const present = req.body;
+    present.push("total")
+    console.log(present)
+
+    try {
+        // Connect to MongoDB and get the collection
+        const collection = await connectToMongoDB(collection_attend);
+    
+        // Loop through each value in present and update corresponding documents
+        for (const key of present) {
+            const update = { $inc: { [key]: 1 } }; // Use computed property name
+            await collection.updateOne({ section: "A" }, update);
+          }
+        res.status(200).json({ message: 'Attendance updated successfully' });
+  }
+    catch (error) {
+        console.error('Error retrieving files:', error);
+        res.status(500).send('Failed to retrieve files');
+    }
+})
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
