@@ -61,14 +61,13 @@ function Tdashboard(){// Extracting props passed from Login component
 
         <div>
             <h2>Assignments List</h2>
+            {console.log(files)}
             <ul>
                 {files.map((file, index) => (
                     <li key={index}>
-                        {Object.keys(file).map(key => (
-                            <div key={key}>
-                                <strong>{key}:</strong> {file[key]}
-                            </div>
-                        ))}
+                        <a href={`data:application/pdf;base64,${file.fileBuffer}`} download="downloaded_file.pdf">
+                            Download
+                        </a>
                     </li>
                 ))}
             </ul>

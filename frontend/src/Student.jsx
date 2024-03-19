@@ -43,7 +43,7 @@ function Student() {
 
         const formData = new FormData();
         formData.append('id',fileId);
-        formData.append('sid', "200");
+        formData.append('sid', id1);
         formData.append('file', fileInput.files[0]);
 
         try {
