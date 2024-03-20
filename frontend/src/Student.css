@@ -1,0 +1,111 @@
+.main-student{
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+}
+
+.main-student-inner{
+    padding: 30px;
+    width: 100%;
+}
+
+.heading{
+    display: inline-flex;
+}
+.heading img{
+    height: 120px;
+    width: 120px;
+}
+.heading h1{
+    padding-top: 40px;
+    padding-left: 20px;
+    font-size: 30px;
+    font-weight: 600;
+}
+.Materials {
+    width: 100%;
+  }
+  
+  .Materials table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td {
+    padding: 10px;
+  }
+  
+  .first-column {
+    width: 75%;
+    border-left: 2px solid white;   
+  }
+  
+  .second-column {
+    width: 25%;
+    border-left: 2px solid white;   
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row color */
+  }
+  
+  tr {
+    border-radius: 10px; /* Curved edges */
+  }
+  
+  /* Style for header row if needed */
+  th {
+    background-color: #ddd;
+    border-left: 4px solid white;   
+  }
+
+  /* .N{
+    background-color: #f5f5f5;
+    padding: 10px;
+    padding-top: 50px;
+
+    margin: 0;
+    display: flex;
+    justify-content:stretch;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    height: 100vh;
+    width: max-content;
+  } */
+.N {
+  font-family: 'Press Start 2P';
+  font-size: 1.5rem;
+  line-height: 2;
+  width:400px;
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: #221;
+  text-transform: uppercase;
+}
+
+.N-inner {
+  padding: 20px;
+}
+
+.N-inner-items {
+  list-style: none;
+}
+
+.N-inner-items span {
+  color: #fff090;
+  cursor: pointer;
+  margin-bottom: 20px;;
+}
+.N-inner-items span a{
+  text-decoration: none;
+  color: #fff090;
+
+}
+
+.N-inner-items span:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+

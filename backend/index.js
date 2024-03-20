@@ -113,6 +113,7 @@ app.post('/material', upload.single('file'),async(req,res)=>{
 
         
         const result = await collection.insertOne({
+            
             fileName,
             file: fileBuffer
           });
@@ -200,12 +201,15 @@ app.get('/assignment', async (req, res) => {
 app.post('/assign_upload',upload.single('file'),async(req,res)=>{
     const collection = await connectToMongoDB(collection_assign);
     const { id,sid } = req.body;
+    
     const fileBuffer = req.file.buffer; 
+    const newValueForSid = `sid${sid}`;
+    const newValueForFileBuffer = `fileBuffer${sid}`
     const objectId = new BSON.ObjectId(id);
     const result = await collection.updateMany(
         { _id: objectId },
-        { $set: { sid, fileBuffer } },
-        { upsert: true } // Upsert ensures the document is inserted if it doesn't exist
+        { $set: {[newValueForSid] : sid, [newValueForFileBuffer]: fileBuffer }},
+        { upsert: true } 
     );
 
     // Check if any document was updated or inserted

@@ -7,17 +7,19 @@ function Attendance(){
 
     useEffect(()=>{
 
-        fetch('http://localhost:8000/attendance')
-        .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                setAttend(data);
-            })
-            .catch(error => {
-                console.error('Error fetching files:', error);
-            });
+      fetch('http://localhost:8000/attendance')
+      .then(response => response.json())
+          .then(data => {
+              console.log(data)
+              setAttend(data);
+          })
+          .catch(error => {
+              console.error('Error fetching files:', error);
+          });
 
-    },[])
+  },[])
+
+    
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -58,7 +60,6 @@ function Attendance(){
 
     return(
         <>
-            <h1>Attendance</h1>
             <ul>
       {attend.map((file, index) => (
         <li key={index}>
